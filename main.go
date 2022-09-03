@@ -28,6 +28,7 @@ func GetROBLOSecurity() {
 func main() {
 	GetROBLOSecurity()
 	FetchDataKeys()
+	FetchSettings()
 
 	if ROBLOSECURITY == "" {
 		println("You did not put your ROBLOSECURITY in!")
