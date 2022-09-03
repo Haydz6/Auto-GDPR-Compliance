@@ -29,6 +29,8 @@ func main() {
 	GetROBLOSecurity()
 	FetchDataKeys()
 	FetchSettings()
+	FetchHandledIds()
+	LoopSaveHandleIds()
 
 	if ROBLOSECURITY == "" {
 		println("You did not put your ROBLOSECURITY in!")
@@ -74,6 +76,8 @@ func main() {
 			break
 		}
 	}
+
+	SaveHandledIds()
 
 	println("Done!")
 	time.Sleep(time.Second * 3)
