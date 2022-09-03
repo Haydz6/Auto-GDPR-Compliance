@@ -2,6 +2,10 @@
 
 Automatically scans through your messages and fulfills GDPR compliance messages.
 
+# NOTICE
+Enabling DeleteGDPRMessagesAfterFulfilled will permanently delete the GDPR messages forever.
+Archiving system messages will not put them into the archive inbox. (Thanks roblox 😡)
+
 # How to use
 
 ## Inserting ROBLOSECURITY
