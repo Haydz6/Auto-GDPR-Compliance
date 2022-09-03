@@ -73,7 +73,6 @@ func ActUponMessages(Messages []MessageStruct) {
 			PlaceIdStr := strconv.Itoa(PlaceId)
 
 			if DataKeys[PlaceIdStr] == nil {
-				println(PlaceIdStr + " has no data key! info")
 				continue
 			}
 
