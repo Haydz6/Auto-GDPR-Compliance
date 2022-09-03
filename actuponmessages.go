@@ -141,7 +141,7 @@ func ActUponMessages(Messages []MessageStruct) {
 		}
 	}
 
-	if Settings.DeleteGDPRMessagesAfterFulfilled {
+	if Settings.DeleteGDPRMessagesAfterFulfilled && len(SuccessfulMessageIds) > 0 {
 		DeleteMessages(SuccessfulMessageIds)
 	}
 }
