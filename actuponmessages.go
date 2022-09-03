@@ -136,7 +136,7 @@ func ActUponMessages(Messages []MessageStruct) {
 			}
 		}
 
-		if AllSuccessful && Settings.DeleteGDPRMessagesAfterFulfilled {
+		if AllSuccessful && (Settings.DeleteGDPRMessagesAfterFulfilled || Settings.MarkGDPRMessagesAsReadAfterFulfilled) {
 			SuccessfulMessageIds = append(SuccessfulMessageIds, Message.Id)
 		}
 	}
