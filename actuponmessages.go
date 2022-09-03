@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"regexp"
 	"strconv"
 	"strings"
@@ -47,16 +46,16 @@ func GetGDPRInfoFromMessage(Message MessageStruct) ([]int, []int) {
 		}
 	}
 
-	bodyByteArrayUserIds, _ := json.Marshal(FilteredUserIds)
-	bodyByteArrayPlaceIds, _ := json.Marshal(FilteredPlaceIds)
+	// bodyByteArrayUserIds, _ := json.Marshal(FilteredUserIds)
+	// bodyByteArrayPlaceIds, _ := json.Marshal(FilteredPlaceIds)
 
-	println("UserIds")
-	println(UserIdsString)
-	println(string(bodyByteArrayUserIds))
+	// println("UserIds")
+	// println(UserIdsString)
+	// println(string(bodyByteArrayUserIds))
 
-	println("PlaceIds")
-	println(PlaceIdsString)
-	println(string(bodyByteArrayPlaceIds))
+	// println("PlaceIds")
+	// println(PlaceIdsString)
+	// println(string(bodyByteArrayPlaceIds))
 
 	return FilteredPlaceIds, FilteredUserIds
 }
@@ -117,8 +116,6 @@ func ActUponMessages(Messages []MessageStruct) {
 									println("FAILED TO DELETE KEY FOR " + UserIdStr)
 									println(StatusCode)
 								}
-
-								break
 							}
 						}
 					}
@@ -133,6 +130,5 @@ func ActUponMessages(Messages []MessageStruct) {
 				}
 			}
 		}
-		break
 	}
 }
