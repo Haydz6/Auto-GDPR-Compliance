@@ -11,7 +11,7 @@ type SettingsStruct struct {
 	MarkGDPRMessagesAsReadAfterFulfilled bool
 }
 
-var DataKeys map[string]map[string]map[string][]string
+var DataKeys map[string]map[string]map[string]map[string][]string
 var Settings SettingsStruct
 
 func FetchDataKeys() {

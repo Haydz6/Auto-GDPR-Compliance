@@ -96,7 +96,7 @@ func ActUponMessages(Messages []MessageStruct) {
 				continue
 			}
 
-			DataStoreNames := DataKeys[PlaceIdStr]
+			DataStoreTypes := DataKeys[PlaceIdStr]
 
 			for _, UserId := range UserIds {
 				if UserIdAlreadyDealtWith[PlaceId][UserId] {
@@ -107,38 +107,46 @@ func ActUponMessages(Messages []MessageStruct) {
 
 				CompleteSuccess := true
 
-				for DataStoreName, Scopes := range DataStoreNames {
-					for Scope, Keys := range Scopes {
-						PlaceDataStore := DataStore{PlaceId: PlaceId, GameId: GameId, Name: DataStoreName, Scope: Scope}
+				for DataStoreType, DataStoreNames := range DataStoreTypes {
+					if DataStoreType == "" {
+						DataStoreType = "DataStore"
+					}
 
-						for _, Key := range Keys {
-							for {
-								Success, Response := PlaceDataStore.RemoveAsync(strings.Replace(Key, `%USERID`, UserIdStr, -1))
-								StatusCode := Response.StatusCode
+					for DataStoreName, Scopes := range DataStoreNames {
+						for Scope, Keys := range Scopes {
+							PlaceDataStore := DataStore{PlaceId: PlaceId, GameId: GameId, Type: DataStoreType, Name: DataStoreName, Scope: Scope}
 
-								if !Success {
-									if StatusCode == 404 {
+							for _, Key := range Keys {
+								for {
+									Success, Response := PlaceDataStore.RemoveAsync(strings.Replace(Key, `%USERID`, UserIdStr, -1))
+									StatusCode := Response.StatusCode
+
+									if !Success {
+										if StatusCode == 404 {
+											break
+										} else if StatusCode == 429 {
+											time.Sleep(time.Second * 10)
+											continue
+										}
+
+										CompleteSuccess = false
+										println("FAILED TO DELETE KEY FOR " + UserIdStr)
+										println(StatusCode)
+									} else {
 										break
-									} else if StatusCode == 429 {
-										time.Sleep(time.Second * 10)
-										continue
 									}
-
-									CompleteSuccess = false
-									println("FAILED TO DELETE KEY FOR " + UserIdStr)
-									println(StatusCode)
 								}
 							}
 						}
 					}
-				}
 
-				if CompleteSuccess {
-					if UserIdAlreadyDealtWith[PlaceId] == nil {
-						UserIdAlreadyDealtWith[PlaceId] = make(map[int]bool)
+					if CompleteSuccess {
+						if UserIdAlreadyDealtWith[PlaceId] == nil {
+							UserIdAlreadyDealtWith[PlaceId] = make(map[int]bool)
+						}
+
+						UserIdAlreadyDealtWith[PlaceId][UserId] = true
 					}
-
-					UserIdAlreadyDealtWith[PlaceId][UserId] = true
 				}
 			}
 		}
