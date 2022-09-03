@@ -28,7 +28,7 @@ func FetchSettings() {
 	Bytes, err := os.ReadFile(path.Join(".", "Settings.json"))
 
 	if err != nil {
-		println(err.Error())
+		panic(err.Error())
 	}
 
 	json.Unmarshal(Bytes, &Settings)
