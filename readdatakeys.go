@@ -6,7 +6,7 @@ import (
 	"path"
 )
 
-var DataKeys map[string][]string
+var DataKeys map[string]map[string][]string
 
 func FetchDataKeys() {
 	Bytes, err := os.ReadFile(path.Join(".", "DataKeys.json"))
