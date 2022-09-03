@@ -8,6 +8,7 @@ import (
 )
 
 var UserIdAlreadyDealtWith = make(map[int]map[int]bool)
+var NoValidDataKeysEntry = make(map[int]bool)
 
 func IsMessageGDPR(Message MessageStruct) bool {
 	return Message.IsSystemMessage && Message.Subject == "[Important] Right to Erasure - Action Requested"
@@ -77,6 +78,12 @@ func ActUponMessages(Messages []MessageStruct) {
 			PlaceIdStr := strconv.Itoa(PlaceId)
 
 			if DataKeys[PlaceIdStr] == nil {
+
+				if !NoValidDataKeysEntry[PlaceId] {
+					NoValidDataKeysEntry[PlaceId] = true
+					println(PlaceIdStr + " does not have a data key entry!")
+				}
+
 				AllSuccessful = false
 				continue
 			}
