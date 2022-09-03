@@ -96,28 +96,30 @@ func ActUponMessages(Messages []MessageStruct) {
 
 				CompleteSuccess := true
 
-				for DataStoreName, Keys := range DataStoreNames {
-					PlaceDataStore := DataStore{PlaceId: PlaceId, GameId: GameId, Name: DataStoreName}
+				for DataStoreName, Scopes := range DataStoreNames {
+					for Scope, Keys := range Scopes {
+						PlaceDataStore := DataStore{PlaceId: PlaceId, GameId: GameId, Name: DataStoreName, Scope: Scope}
 
-					for _, Key := range Keys {
-						for {
-							Success, Response := PlaceDataStore.RemoveAsync(strings.Replace(Key, `%USERID`, UserIdStr, -1))
-							StatusCode := Response.StatusCode
+						for _, Key := range Keys {
+							for {
+								Success, Response := PlaceDataStore.RemoveAsync(strings.Replace(Key, `%USERID`, UserIdStr, -1))
+								StatusCode := Response.StatusCode
 
-							if !Success {
-								if StatusCode == 404 {
-									break
-								} else if StatusCode == 429 {
-									time.Sleep(time.Second * 10)
-									continue
+								if !Success {
+									if StatusCode == 404 {
+										break
+									} else if StatusCode == 429 {
+										time.Sleep(time.Second * 10)
+										continue
+									}
+
+									CompleteSuccess = false
+									println("FAILED TO DELETE KEY FOR " + UserIdStr)
+									println(StatusCode)
 								}
 
-								CompleteSuccess = false
-								println("FAILED TO DELETE KEY FOR " + UserIdStr)
-								println(StatusCode)
+								break
 							}
-
-							break
 						}
 					}
 				}
