@@ -30,7 +30,7 @@ func main() {
 		return
 	}
 
-	PreviousPageNumber := 1
+	PreviousPageNumber := 0
 	for {
 		Success, Response, IsEnd, PageNumber, Messages := FetchMessages(PreviousPageNumber)
 		PreviousPageNumber = PageNumber + 1
