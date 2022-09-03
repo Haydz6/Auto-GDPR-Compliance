@@ -50,5 +50,5 @@ func FetchMessages(PageNum int) (bool, *http.Response, bool, int, []MessageStruc
 	var Body MessagesStruct
 	json.NewDecoder(Response.Body).Decode(&Body)
 
-	return true, Response, Body.PageNumber >= Body.TotalPages, Body.PageNumber, Body.Collection
+	return true, Response, Body.PageNumber+1 >= Body.TotalPages, Body.PageNumber, Body.Collection
 }
