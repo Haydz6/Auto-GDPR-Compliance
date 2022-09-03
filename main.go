@@ -37,6 +37,8 @@ func main() {
 		return
 	}
 
+	println("Running")
+
 	PreviousPageNumber := 0
 	for {
 		Completed := false
@@ -59,7 +61,6 @@ func main() {
 			}
 
 			ActUponMessages(Messages)
-			println(PageNumber)
 
 			Completed = IsEnd
 

@@ -68,7 +68,7 @@ func DeleteMessages(MessageIds []int) (bool, *http.Response) {
 	Success, Response := RobloxRequest("https://privatemessages.roblox.com/v1/messages/archive", "POST", nil, string(bodyByteArray))
 
 	if !Success {
-		println("Failed to fetch messages!")
+		println("Failed to delete messages!")
 		println(Response.StatusCode)
 		return false, Response
 	}
@@ -87,7 +87,7 @@ func ReadMessages(MessageIds []int) (bool, *http.Response) {
 	Success, Response := RobloxRequest("https://privatemessages.roblox.com/v1/messages/mark-read", "POST", nil, string(bodyByteArray))
 
 	if !Success {
-		println("Failed to fetch messages!")
+		println("Failed to mark read messages!")
 		println(Response.StatusCode)
 		return false, Response
 	}
