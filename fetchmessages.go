@@ -6,6 +6,10 @@ import (
 	"net/http"
 )
 
+type DeleteMessagesBodyReqStruct struct {
+	MessageIds []int `json:"messageIds"`
+}
+
 type MessageSenderStruct struct {
 	Id          int    `json:"id"`
 	Name        string `json:"name"`
@@ -51,4 +55,23 @@ func FetchMessages(PageNum int) (bool, *http.Response, bool, int, []MessageStruc
 	json.NewDecoder(Response.Body).Decode(&Body)
 
 	return true, Response, Body.PageNumber+1 >= Body.TotalPages, Body.PageNumber, Body.Collection
+}
+
+func DeleteMessages(MessageIds []int) (bool, *http.Response) {
+	bodyByteArray, err := json.Marshal(DeleteMessagesBodyReqStruct{MessageIds: MessageIds})
+
+	if err != nil {
+		println(err.Error())
+		return false, nil
+	}
+
+	Success, Response := RobloxRequest("https://privatemessages.roblox.com/v1/messages/archive", "GET", nil, string(bodyByteArray))
+
+	if !Success {
+		println("Failed to fetch messages!")
+		println(Response.StatusCode)
+		return false, Response
+	}
+
+	return true, Response
 }
