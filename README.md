@@ -18,10 +18,12 @@ You must insert the following into the DataKeys.json file
 ```
 {
     "PLACEIDHERE": {
-        "DATASTORENAMEHERE": {
-            "SCOPEHERE": [
-                "KEY%USERID"
-            ]
+        "DATASTORETYPE": {
+            "DATASTORENAMEHERE": {
+                "SCOPEHERE": [
+                    "KEY%USERID"
+                ]
+            }
         }
     }
 }
@@ -31,11 +33,20 @@ Example:
 ```
 {
     "10792426231": {
-        "PlayerData": {
-            "": [
-                "Pets_%USERID",
-                "Money_%USERID"
-            ]
+        "DataStore": {
+            "PlayerData": {
+                "": [
+                    "Pets_%USERID",
+                    "Money_%USERID"
+                ]
+            }
+        },
+        "OrderedDataStore": {
+            "Money": {
+                "": [
+                    "%USERID"
+                ]
+            }
         }
     }
 }
