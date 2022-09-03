@@ -32,20 +32,37 @@ func main() {
 
 	PreviousPageNumber := 0
 	for {
-		Success, Response, IsEnd, PageNumber, Messages := FetchMessages(PreviousPageNumber)
-		PreviousPageNumber = PageNumber + 1
+		Completed := false
 
-		if !Success {
-			println("Failed to fetch message!")
-			println(Response.StatusCode)
-			break
+		for {
+			Success, Response, IsEnd, PageNumber, Messages := FetchMessages(PreviousPageNumber)
+			PreviousPageNumber = PageNumber + 1
+
+			if !Success {
+				StatusCode := Response.StatusCode
+
+				if StatusCode == 429 {
+					time.Sleep(time.Second * 10)
+					break
+				}
+
+				println("Failed to fetch message!")
+				println(StatusCode)
+				break
+			}
+
+			ActUponMessages(Messages)
+			println(PageNumber)
+
+			Completed = IsEnd
+
+			if IsEnd {
+				println("Went through all the messages!")
+				break
+			}
 		}
 
-		ActUponMessages(Messages)
-		println(PageNumber)
-
-		if IsEnd {
-			println("Went through all the messages!")
+		if Completed {
 			break
 		}
 	}
