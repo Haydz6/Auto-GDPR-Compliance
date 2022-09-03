@@ -61,6 +61,8 @@ func GetGDPRInfoFromMessage(Message MessageStruct) ([]int, []int) {
 }
 
 func ActUponMessages(Messages []MessageStruct) {
+	SuccessfulMessageIds := make([]int, 0)
+
 	for _, Message := range Messages {
 		if !IsMessageGDPR(Message) {
 			continue
@@ -69,16 +71,20 @@ func ActUponMessages(Messages []MessageStruct) {
 		PlaceIds, UserIds := GetGDPRInfoFromMessage(Message)
 		GetGameIdFromPlaceIds(PlaceIds)
 
+		AllSuccessful := true
+
 		for _, PlaceId := range PlaceIds {
 			PlaceIdStr := strconv.Itoa(PlaceId)
 
 			if DataKeys[PlaceIdStr] == nil {
+				AllSuccessful = false
 				continue
 			}
 
 			Success, GameId := GetGameIdFromPlaceId(PlaceId)
 
 			if !Success {
+				AllSuccessful = false
 				println("FAILED TO GET GAMEID FOR " + PlaceIdStr)
 				continue
 			}
@@ -129,5 +135,13 @@ func ActUponMessages(Messages []MessageStruct) {
 				}
 			}
 		}
+
+		if AllSuccessful && Settings.DeleteGDPRMessagesAfterFulfilled {
+			SuccessfulMessageIds = append(SuccessfulMessageIds, Message.Id)
+		}
+	}
+
+	if Settings.DeleteGDPRMessagesAfterFulfilled {
+		DeleteMessages(SuccessfulMessageIds)
 	}
 }
