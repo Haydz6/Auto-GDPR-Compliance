@@ -68,49 +68,57 @@ func ActUponMessages(Messages []MessageStruct) {
 		}
 
 		PlaceIds, UserIds := GetGDPRInfoFromMessage(Message)
-		GetRandomPlaceIdFromGameIds(PlaceIds)
+		GetGameIdFromPlaceIds(PlaceIds)
 
 		for _, PlaceId := range PlaceIds {
-			if DataKeys[string(PlaceId)] == nil {
-				println(string(PlaceId) + " has no data key! info")
+			PlaceIdStr := strconv.Itoa(PlaceId)
+
+			if DataKeys[PlaceIdStr] == nil {
+				println(PlaceIdStr + " has no data key! info")
 				continue
 			}
 
-			Success, GameId := GetRandomPlaceIdFromGameId(PlaceId)
+			Success, GameId := GetGameIdFromPlaceId(PlaceId)
 
 			if !Success {
-				println("FAILED TO GET GAMEID FOR " + string(PlaceId))
+				println("FAILED TO GET GAMEID FOR " + PlaceIdStr)
 				continue
 			}
 
-			PlaceDataStore := DataStore{PlaceId: PlaceId, GameId: GameId}
-			Keys := DataKeys[string(PlaceId)]
+			DataStoreNames := DataKeys[PlaceIdStr]
 
 			for _, UserId := range UserIds {
 				if UserIdAlreadyDealtWith[PlaceId][UserId] {
 					continue
 				}
 
-				CompleteSuccess := true
-				for _, Key := range Keys {
-					for {
-						Success, Response := PlaceDataStore.RemoveAsync(strings.Replace(Key, `%USERID`, string(UserId), -1))
-						StatusCode := Response.StatusCode
+				UserIdStr := strconv.Itoa(UserId)
 
-						if !Success {
-							if StatusCode == 404 {
-								break
-							} else if StatusCode == 429 {
-								time.Sleep(time.Second * 10)
-								continue
+				CompleteSuccess := true
+
+				for DataStoreName, Keys := range DataStoreNames {
+					PlaceDataStore := DataStore{PlaceId: PlaceId, GameId: GameId, Name: DataStoreName}
+
+					for _, Key := range Keys {
+						for {
+							Success, Response := PlaceDataStore.RemoveAsync(strings.Replace(Key, `%USERID`, UserIdStr, -1))
+							StatusCode := Response.StatusCode
+
+							if !Success {
+								if StatusCode == 404 {
+									break
+								} else if StatusCode == 429 {
+									time.Sleep(time.Second * 10)
+									continue
+								}
+
+								CompleteSuccess = false
+								println("FAILED TO DELETE KEY FOR " + UserIdStr)
+								println(StatusCode)
 							}
 
-							CompleteSuccess = false
-							println("FAILED TO DELETE KEY FOR " + string(UserId))
-							println(StatusCode)
+							break
 						}
-
-						break
 					}
 				}
 
