@@ -75,3 +75,22 @@ func DeleteMessages(MessageIds []int) (bool, *http.Response) {
 
 	return true, Response
 }
+
+func ReadMessages(MessageIds []int) (bool, *http.Response) {
+	bodyByteArray, err := json.Marshal(DeleteMessagesBodyReqStruct{MessageIds: MessageIds})
+
+	if err != nil {
+		println(err.Error())
+		return false, nil
+	}
+
+	Success, Response := RobloxRequest("https://privatemessages.roblox.com/v1/messages/mark-read", "POST", nil, string(bodyByteArray))
+
+	if !Success {
+		println("Failed to fetch messages!")
+		println(Response.StatusCode)
+		return false, Response
+	}
+
+	return true, Response
+}

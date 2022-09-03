@@ -7,8 +7,8 @@ import (
 )
 
 type SettingsStruct struct {
-	DeleteGDPRMessagesAfterFulfilled bool
-	CreateLogFile                    bool
+	DeleteGDPRMessagesAfterFulfilled     bool
+	MarkGDPRMessagesAsReadAfterFulfilled bool
 }
 
 var DataKeys map[string]map[string]map[string][]string
