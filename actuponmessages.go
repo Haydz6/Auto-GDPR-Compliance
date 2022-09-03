@@ -65,7 +65,7 @@ func ActUponMessages(Messages []MessageStruct) {
 	SuccessfulMessageIds := make([]int, 0)
 
 	for _, Message := range Messages {
-		if !IsMessageGDPR(Message) {
+		if !IsMessageGDPR(Message) || HandledMessageIds[Message.Id] {
 			continue
 		}
 
@@ -146,6 +146,7 @@ func ActUponMessages(Messages []MessageStruct) {
 						}
 
 						UserIdAlreadyDealtWith[PlaceId][UserId] = true
+						HandledMessageIds[Message.Id] = true
 					}
 				}
 			}
