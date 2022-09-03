@@ -65,7 +65,7 @@ func DeleteMessages(MessageIds []int) (bool, *http.Response) {
 		return false, nil
 	}
 
-	Success, Response := RobloxRequest("https://privatemessages.roblox.com/v1/messages/archive", "GET", nil, string(bodyByteArray))
+	Success, Response := RobloxRequest("https://privatemessages.roblox.com/v1/messages/archive", "POST", nil, string(bodyByteArray))
 
 	if !Success {
 		println("Failed to fetch messages!")
