@@ -1,3 +1,4 @@
 {
-    "DeleteGDPRMessagesAfterFulfilled": true
+    "DeleteGDPRMessagesAfterFulfilled": false,
+    "MarkGDPRMessagesAsReadAfterFulfilled": true
 }
