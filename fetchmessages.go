@@ -48,14 +48,16 @@ func FetchMessages(PageNum int) (bool, *http.Response, bool, int, []MessageStruc
 	Success, Response := RobloxRequest(fmt.Sprintf("https://privatemessages.roblox.com/v1/messages?pageNumber=%d&pageSize=20&messageTab=Inbox", PageNum), "GET", nil, "")
 
 	if !Success {
-		if Response.StatusCode == 401 {
+		StatusCode := Response.StatusCode
+
+		if StatusCode == 401 {
 			println("Your ROBLOSECURITY is not valid!")
 			time.Sleep(time.Second * 3)
 			os.Exit(1)
 		}
 
 		println("Failed to fetch messages!")
-		println(Response.StatusCode)
+		println(StatusCode)
 		return false, Response, false, 0, nil
 	}
 
