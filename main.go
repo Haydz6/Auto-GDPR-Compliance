@@ -16,7 +16,13 @@ func GetROBLOSecurity() {
 		panic(err.Error())
 	}
 
-	ROBLOSECURITY = strings.Split(string(String), "\n")[1]
+	TextSplit := strings.Split(string(String), "\n")
+
+	if len(TextSplit) > 1 {
+		ROBLOSECURITY = TextSplit[1]
+	} else {
+		ROBLOSECURITY = TextSplit[0]
+	}
 }
 
 func main() {
