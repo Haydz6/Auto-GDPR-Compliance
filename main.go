@@ -16,7 +16,7 @@ func GetROBLOSecurity() {
 		panic(err.Error())
 	}
 
-	ROBLOSECURITY = strings.ReplaceAll(string(String), "Put your ROBLOSECURITY below!!!", "")
+	ROBLOSECURITY = strings.Split(string(String), "\n")[1]
 }
 
 func main() {
@@ -42,13 +42,12 @@ func main() {
 		}
 
 		ActUponMessages(Messages)
+		println(PageNumber)
 
 		if IsEnd {
 			println("Went through all the messages!")
 			break
 		}
-
-		break
 	}
 
 	println("Done!")
